@@ -1,3 +1,6 @@
+"use client";
+import { useState } from "react";
+
 export default function SnackPage() {
   const snacks = [
     { id: 1, name: "Dog Treats", description: "Delicious treats for your pets.", price: 6.99, imageUrl: "/images/snack1.jpg" },
@@ -5,6 +8,12 @@ export default function SnackPage() {
     { id: 3, name: "Organic Snacks", description: "Healthy and organic snacks for pets.", price: 8.99, imageUrl: "/images/snack3.jpg" },
     { id: 4, name: "Puppy Bites", description: "Perfect for growing puppies.", price: 7.99, imageUrl: "/images/snack4.jpg" },
   ];
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredSnacks = snacks.filter((snack) =>
+    snack.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="container mx-auto py-8">
@@ -14,9 +23,20 @@ export default function SnackPage() {
         Treat your furry friends with our delicious and healthy snacks!
       </p>
 
+      {/* Search Input */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search for snacks..."
+          className="w-full md:w-1/3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {snacks.map((product) => (
+        {filteredSnacks.map((product) => (
           <div
             key={product.id}
             className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
@@ -41,6 +61,11 @@ export default function SnackPage() {
           </div>
         ))}
       </div>
+
+      {/* No Results Found */}
+      {filteredSnacks.length === 0 && (
+        <p className="text-gray-500 mt-4 text-center">No snacks found.</p>
+      )}
     </div>
   );
 }

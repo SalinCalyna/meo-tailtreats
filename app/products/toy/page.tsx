@@ -22,6 +22,9 @@ export default function ToyPage() {
             <h2 className="text-xl font-bold mt-4">{product.name}</h2>
             <p className="text-gray-600">{product.description}</p>
             <p className="text-blue-600 font-bold mt-2">${product.price.toFixed(2)}</p>
+            <button className="bg-blue-600 text-white w-full py-2 rounded mt-4 hover:bg-blue-700 transition">
+                Add to Cart
+              </button>
           </div>
         ))}
       </div>
