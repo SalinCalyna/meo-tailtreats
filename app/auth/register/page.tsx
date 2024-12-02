@@ -1,34 +1,76 @@
-import bcrypt from "bcrypt";
-import prisma from "./prisma"; // เชื่อม Prisma ORM
+"use client";
+import { useState } from "react";
 
-export default async function handler(req, res) {
-  if (req.method === "POST") {
-    const { name, email, password } = req.body;
+export default function RegisterPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    // เช็คว่าผู้ใช้งานนี้มีอยู่ในระบบหรือไม่
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    if (existingUser) {
-      return res.status(400).json({ message: "Email already registered." });
-    }
-
-    // เข้ารหัสรหัสผ่านด้วย bcrypt
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // เพิ่มผู้ใช้ใหม่ในฐานข้อมูล
-    const newUser = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({ name, email, password }),
     });
 
-    res.status(201).json({ message: "User registered successfully.", user: newUser });
-  } else {
-    res.setHeader("Allow", ["POST"]);
-    res.status(405).json({ message: `Method ${req.method} not allowed.` });
-  }
+    if (response.ok) {
+      alert("Registration successful! Please login.");
+      window.location.href = "/auth/login";
+    } else {
+      const errorData = await response.json();
+      alert(errorData.message || "Registration failed.");
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-blue-50">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <h1 className="text-2xl font-bold text-center text-blue-600 mb-4">
+          Register
+        </h1>
+        <form onSubmit={handleRegister}>
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="border p-2 w-full rounded mb-4"
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border p-2 w-full rounded mb-4"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="border p-2 w-full rounded mb-4"
+            required
+          />
+          <button
+            type="submit"
+            className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700 transition"
+          >
+            Register
+          </button>
+        </form>
+        <p className="text-center mt-4">
+          Already have an account?{" "}
+          <a href="/auth/login" className="text-blue-600 hover:underline">
+            Login here
+          </a>
+        </p>
+      </div>
+    </div>
+  );
 }
