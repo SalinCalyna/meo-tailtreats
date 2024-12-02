@@ -23,3 +23,12 @@ model Product {
   category    String
   createdAt   DateTime @default(now())
 }
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  category    String
+  imageUrl    String   // ฟิลด์ใหม่สำหรับ URL ของรูปสินค้า
+  createdAt   DateTime @default(now())
+}
