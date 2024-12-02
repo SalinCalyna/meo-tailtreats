@@ -1,27 +1,26 @@
 "use client";
 import React, { useState } from "react";
 
-export default function RegisterPage() {
-  const [name, setName] = useState("");
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch("/api/auth/register", {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ email, password }),
     });
 
     if (response.ok) {
-      alert("Registration successful! Please login.");
-      window.location.href = "/auth/login";
+      alert("Login successful!");
+      window.location.href = "/";
     } else {
-      alert("Registration failed. Email might already be registered.");
+      alert("Login failed. Please check your email or password.");
     }
   };
 
@@ -29,17 +28,9 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h1 className="text-2xl font-bold text-center text-blue-600 mb-4">
-          Register
+          Login
         </h1>
-        <form onSubmit={handleRegister}>
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="border p-2 w-full rounded mb-4"
-            required
-          />
+        <form onSubmit={handleLogin}>
           <input
             type="email"
             placeholder="Email"
@@ -60,13 +51,13 @@ export default function RegisterPage() {
             type="submit"
             className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700 transition"
           >
-            Register
+            Login
           </button>
         </form>
         <p className="text-center mt-4">
-          Already have an account?{" "}
-          <a href="/auth/login" className="text-blue-600 hover:underline">
-            Login here
+          Don't have an account?{" "}
+          <a href="/auth/register" className="text-blue-600 hover:underline">
+            Register here
           </a>
         </p>
       </div>
