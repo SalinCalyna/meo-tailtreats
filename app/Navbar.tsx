@@ -1,8 +1,24 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Function to close dropdown when clicking outside
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest("#dropdownMenu")) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
 
   return (
     <nav className="bg-blue-600 text-white py-4">
@@ -19,7 +35,7 @@ export default function Navbar() {
           </a>
 
           {/* Dropdown Menu */}
-          <div className="relative">
+          <div className="relative" id="dropdownMenu">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="hover:text-yellow-300 text-lg transition flex items-center"
@@ -41,27 +57,26 @@ export default function Navbar() {
 
             {isDropdownOpen && (
               <div className="absolute mt-2 bg-white text-blue-600 shadow-md rounded w-40">
-                <a
-                  href="/products/cat"
-                  className="block px-4 py-2 hover:bg-blue-100"
-                >
+                <a href="/products/cat" className="block px-4 py-2 hover:bg-blue-100">
                   Cat Food
                 </a>
-                <a
-                  href="/products/dog"
-                  className="block px-4 py-2 hover:bg-blue-100"
-                >
+                <a href="/products/cat-titter" className="block px-4 py-2 hover:bg-blue-100">
+                  Cat Titter
+                </a>
+                <a href="/products/dog" className="block px-4 py-2 hover:bg-blue-100">
                   Dog Food
+                </a>
+                <a href="/products/snack" className="block px-4 py-2 hover:bg-blue-100">
+                  Snack
+                </a>
+                <a href="/products/toy" className="block px-4 py-2 hover:bg-blue-100">
+                  Toy
                 </a>
               </div>
             )}
           </div>
-          
 
-          <a
-            href="/admin"
-            className="hover:text-yellow-300 text-lg transition"
-          >
+          <a href="/admin" className="hover:text-yellow-300 text-lg transition">
             Admin
           </a>
         </div>
