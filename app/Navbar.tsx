@@ -81,8 +81,14 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Login/Logout */}
-        <div>
+        {/* Login/Register */}
+        <div className="space-x-4">
+          <a
+            href="/auth/register"
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 transition"
+          >
+            Register
+          </a>
           <a
             href="/auth/login"
             className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400 transition"
