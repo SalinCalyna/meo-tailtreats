@@ -1,24 +1,18 @@
-import "../styles/globals.css";
+import "./globals.css"; // นำเข้า CSS
+import Navbar from "./Navbar"; // นำเข้า Navbar
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        {/* Header */}
-        <header className="bg-blue-600 text-white py-4">
-          <nav className="container mx-auto flex justify-between items-center">
-            <h1 className="text-3xl font-bold">TailTreats</h1>
-            <a href="/auth/login" className="text-lg hover:text-yellow-300">
-              Login
-            </a>
-          </nav>
-        </header>
+      <body className="bg-blue-50 min-h-screen">
+        {/* Navbar */}
+        <Navbar />
 
         {/* Main Content */}
         <main className="container mx-auto py-8">{children}</main>
 
         {/* Footer */}
-        <footer className="bg-blue-600 text-white text-center py-4 mt-8">
+        <footer className="bg-blue-600 text-white text-center py-4">
           &copy; 2024 TailTreats. All rights reserved.
         </footer>
       </body>

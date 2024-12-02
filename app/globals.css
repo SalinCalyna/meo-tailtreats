@@ -2,20 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
+}
+
+/* ปรับแต่งสี Tailwind */
+.bg-blue-50 {
+  background-color: #f0f8ff;
+}
+
+.bg-blue-600 {
+  background-color: #1e3a8a;
+}
+
+.text-blue-600 {
+  color: #1e3a8a;
+}
+
+.bg-yellow-100 {
+  background-color: #fef9c3;
+}
+
+.hover\:bg-yellow-100:hover {
+  background-color: #fef9c3;
 }
