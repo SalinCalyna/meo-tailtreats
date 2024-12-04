@@ -1,11 +1,16 @@
 "use client";
+
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State for login status
+  const [isAdmin, setIsAdmin] = useState(false); // State for admin access
+  const router = useRouter();
 
-  // Function to close dropdown when clicking outside
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -21,31 +26,48 @@ export default function Navbar() {
     };
   }, []);
 
-  // Function to handle Login
-  const handleLogin = () => {
-    setIsLoggedIn(true); // Set logged in state to true
-    alert("You are now logged in!");
+  // Handle Admin Login
+  const handleAdminLogin = () => {
+    const password = prompt("Please enter the admin password:");
+    if (password === "admin123") {
+      setIsLoggedIn(true);
+      setIsAdmin(true);
+      localStorage.setItem("isAdmin", "true"); // Store admin status
+      alert("You are now logged in as Admin!");
+      router.push("/admin"); // Redirect to admin dashboard
+    } else {
+      alert("Incorrect password!");
+    }
   };
 
-  // Function to handle Logout
+  // Handle Logout
   const handleLogout = () => {
-    setIsLoggedIn(false); // Set logged in state to false
+    setIsLoggedIn(false);
+    setIsAdmin(false);
+    localStorage.removeItem("isAdmin"); // Remove admin status
     alert("You have been logged out!");
+    router.push("/"); // Redirect to home page
+  };
+
+  // Handle Customer Login
+  const handleCustomerLogin = () => {
+    setIsLoggedIn(true);
+    alert("You are now logged in as a Customer!");
   };
 
   return (
-    <nav className="bg-blue-600 text-white py-4">
+    <nav className="bg-blue-600 text-white py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
-        <a href="/" className="text-3xl font-bold hover:text-yellow-300">
+        <Link href="/" className="text-3xl font-bold hover:text-yellow-300">
           TailTreats
-        </a>
+        </Link>
 
         {/* Links */}
         <div className="space-x-8 flex items-center">
-          <a href="/" className="hover:text-yellow-300 text-lg transition">
+          <Link href="/" className="hover:text-yellow-300 text-lg transition">
             Home
-          </a>
+          </Link>
 
           {/* Dropdown Menu */}
           <div className="relative" id="dropdownMenu">
@@ -70,54 +92,67 @@ export default function Navbar() {
 
             {isDropdownOpen && (
               <div className="absolute mt-2 bg-white text-blue-600 shadow-md rounded w-40">
-                <a href="/products/cat" className="block px-4 py-2 hover:bg-blue-100">
+                <Link href="/products/cat" className="block px-4 py-2 hover:bg-blue-100">
                   Cat Food
-                </a>
-                <a href="/products/cat-titter" className="block px-4 py-2 hover:bg-blue-100">
+                </Link>
+                <Link href="/products/cat-titter" className="block px-4 py-2 hover:bg-blue-100">
                   Cat Titter
-                </a>
-                <a href="/products/dog" className="block px-4 py-2 hover:bg-blue-100">
+                </Link>
+                <Link href="/products/dog" className="block px-4 py-2 hover:bg-blue-100">
                   Dog Food
-                </a>
-                <a href="/products/snack" className="block px-4 py-2 hover:bg-blue-100">
+                </Link>
+                <Link href="/products/snack" className="block px-4 py-2 hover:bg-blue-100">
                   Snack
-                </a>
-                <a href="/products/toy" className="block px-4 py-2 hover:bg-blue-100">
+                </Link>
+                <Link href="/products/toy" className="block px-4 py-2 hover:bg-blue-100">
                   Toy
-                </a>
+                </Link>
               </div>
             )}
           </div>
 
-          <a href="/admin" className="hover:text-yellow-300 text-lg transition">
-            Admin
-          </a>
+          {/* Admin Access */}
+          {isAdmin ? (
+            <Link href="/admin/page" className="hover:text-yellow-300 text-lg transition">
+              Admin
+            </Link>
+          ) : (
+            <button
+              onClick={handleAdminLogin}
+              className="hover:text-yellow-300 text-lg transition"
+            >
+              Admin
+            </button>
+          )}
         </div>
 
         {/* Cart and Login/Logout */}
         <div className="space-x-4 flex items-center">
           {/* Cart */}
-          <a
-            href="/cart"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 transition flex items-center"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          {isLoggedIn && (
+            <Link
+              href="/cart"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 transition flex items-center"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.1 4.3c-.3 1.1.5 2.2 1.7 2.2H19m-5 0a2 2 0 11-4 0m10-2H7"
-              />
-            </svg>
-            Cart
-          </a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.1 4.3c-.3 1.1.5 2.2 1.7 2.2H19m-5 0a2 2 0 11-4 0m10-2H7"
+                />
+              </svg>
+              Cart
+            </Link>
+          )}
 
+          {/* Customer Login */}
           {isLoggedIn ? (
             <button
               onClick={handleLogout}
@@ -128,17 +163,17 @@ export default function Navbar() {
           ) : (
             <>
               <button
-                onClick={handleLogin}
+                onClick={handleCustomerLogin}
                 className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400 transition"
               >
                 Login
               </button>
-              <a
+              <Link
                 href="/auth/register"
                 className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 transition"
               >
                 Register
-              </a>
+              </Link>
             </>
           )}
         </div>

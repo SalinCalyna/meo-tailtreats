@@ -1,20 +1,22 @@
-import "./globals.css"; // นำเข้า CSS
-import Navbar from "./Navbar"; // นำเข้า Navbar
+import "./globals.css";
+import Navbar from "./Navbar";
+import { CartProvider } from "../lib/cartContext";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-blue-50 min-h-screen">
-        {/* Navbar */}
-        <Navbar />
-
-        {/* Main Content */}
-        <main className="container mx-auto py-8">{children}</main>
-
-        {/* Footer */}
-        <footer className="bg-blue-600 text-white text-center py-4">
-          &copy; 2024 TailTreats. All rights reserved.
-        </footer>
+      <head>
+        <title>TailTreats</title>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
+      <body className="bg-gray-50 min-h-screen">
+        <CartProvider>
+          {/* Navbar อยู่บนสุด */}
+          <Navbar />
+          {/* เนื้อหาของแต่ละหน้า */}
+          <main className="container mx-auto px-4 py-8">{children}</main>
+        </CartProvider>
       </body>
     </html>
   );

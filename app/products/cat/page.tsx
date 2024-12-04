@@ -1,18 +1,19 @@
 "use client";
+
 import { useState } from "react";
 
 export default function CatProductsPage() {
   const catProducts = [
-    { id: 1, name: "Premium Cat Food", description: "Healthy and nutritious cat food.", price: 12.99, imageUrl: "/images/cat1.jpg" },
-    { id: 2, name: "Kitten Starter Food", description: "Perfect for growing kittens.", price: 15.99, imageUrl: "/images/cat2.jpg" },
-    { id: 3, name: "Grain-Free Cat Food", description: "Delicious food for sensitive cats.", price: 18.99, imageUrl: "/images/cat3.jpg" },
-    { id: 4, name: "Senior Cat Food", description: "Tailored nutrition for older cats.", price: 14.99, imageUrl: "/images/cat4.jpg" },
-    { id: 5, name: "Organic Cat Food", description: "Natural ingredients for healthy cats.", price: 19.99, imageUrl: "/images/cat5.jpg" },
-    { id: 6, name: "Wet Cat Food", description: "Tasty and moist meals for cats.", price: 11.99, imageUrl: "/images/cat6.jpg" },
-    { id: 7, name: "Dry Cat Food", description: "Convenient and healthy option.", price: 13.99, imageUrl: "/images/cat7.jpg" },
-    { id: 8, name: "High Protein Cat Food", description: "For active and energetic cats.", price: 17.99, imageUrl: "/images/cat8.jpg" },
-    { id: 9, name: "Weight Control Cat Food", description: "Helps maintain a healthy weight.", price: 16.99, imageUrl: "/images/cat9.jpg" },
-    { id: 10, name: "Dental Care Cat Food", description: "Supports dental health for cats.", price: 18.49, imageUrl: "/images/cat10.jpg" },
+    { id: 1, name: "Premium Cat Food", description: "Healthy and nutritious cat food.", price: 12.99, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3J4N82h4vq59GaKf5U_BqzG-zsULG0a40Aw&s" },
+    { id: 2, name: "Grain-Free Cat Food", description: "Perfect for cats with sensitivities.", price: 14.99, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz0w2wrB9mYzGn4CXZdpkLKNME8Isdrp4VYg&s" },
+    { id: 3, name: "Kitten Starter Food", description: "Nutritious food for growing kittens.", price: 15.99, imageUrl: "https://www.purina.co.th/sites/default/files/2021-12/01%20Kitten%20Starter%201.5kg-1.jpg" },
+    { id: 4, name: "Senior Cat Food", description: "Special formula for senior cats.", price: 13.99, imageUrl: " https://m.media-amazon.com/images/I/711QdNoQUGL._AC_UF1000,1000_QL80_.jpg" },
+    { id: 5, name: "Organic Cat Food", description: "Healthy and natural ingredients.", price: 17.99, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVAUUWVOgvVzHvN2TcP_oKJxPIZEZo3yP4JA&s" },
+    { id: 6, name: "High Protein Cat Food", description: "For active and energetic cats.", price: 16.99, imageUrl: "https://www.whiskas.ca/cdn-cgi/image/width=600,height=600,f=auto,quality=90/sites/g/files/fnmzdf4896/files/migrate-product-files/images/awfpaihvw2cg4llqqgjg.png" },
+    { id: 7, name: "Wet Cat Food", description: "Tasty wet food for your cat.", price: 10.99, imageUrl: "https://tailybuddy.com/products/4678/whiskas-adult-mack.jpg" },
+    { id: 8, name: "Dry Cat Food", description: "Convenient and healthy option.", price: 11.99, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSiAnEImKYSmqZDY3-BO8sUpmRLrCVZOTBRw&s" },
+    { id: 9, name: "Dental Chew Cat Food", description: "Helps keep teeth clean and healthy.", price: 9.99, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQigLBVpzTk6rgK8djDyZtYMaJKEs1T9mi7oA&s" },
+    { id: 10, name: "Weight Control Cat Food", description: "For maintaining a healthy weight.", price: 12.99, imageUrl: "https://cdn.royalcanin-weshare-online.io/fOd3TYcBaPOZra8qUPya/v40/00030111442703f-cf-gs1" },
   ];
 
   const [searchTerm, setSearchTerm] = useState("");
