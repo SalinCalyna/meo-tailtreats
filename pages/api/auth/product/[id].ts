@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../prisma/client"; // หากอยู่ในตำแหน่งที่ลึกกว่า
+import prisma from "@/prisma/client"; // หากอยู่ในตำแหน่งที่ลึกกว่า
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State for login status
 
   // Function to close dropdown when clicking outside
   useEffect(() => {
@@ -19,6 +20,18 @@ export default function Navbar() {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, []);
+
+  // Function to handle Login
+  const handleLogin = () => {
+    setIsLoggedIn(true); // Set logged in state to true
+    alert("You are now logged in!");
+  };
+
+  // Function to handle Logout
+  const handleLogout = () => {
+    setIsLoggedIn(false); // Set logged in state to false
+    alert("You have been logged out!");
+  };
 
   return (
     <nav className="bg-blue-600 text-white py-4">
@@ -81,20 +94,53 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Login/Register */}
-        <div className="space-x-4">
+        {/* Cart and Login/Logout */}
+        <div className="space-x-4 flex items-center">
+          {/* Cart */}
           <a
-            href="/auth/register"
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 transition"
+            href="/cart"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 transition flex items-center"
           >
-            Register
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.1 4.3c-.3 1.1.5 2.2 1.7 2.2H19m-5 0a2 2 0 11-4 0m10-2H7"
+              />
+            </svg>
+            Cart
           </a>
-          <a
-            href="/auth/login"
-            className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400 transition"
-          >
-            Login
-          </a>
+
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 transition"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={handleLogin}
+                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400 transition"
+              >
+                Login
+              </button>
+              <a
+                href="/auth/register"
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 transition"
+              >
+                Register
+              </a>
+            </>
+          )}
         </div>
       </div>
     </nav>

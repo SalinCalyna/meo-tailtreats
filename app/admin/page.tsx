@@ -18,7 +18,7 @@ export default function AdminDashboard() {
   }, []);
 
   const fetchProducts = async () => {
-    const response = await fetch("/api/products");
+    const response = await fetch("/pages/api/products");
     const data = await response.json();
     setProducts(data);
   };
