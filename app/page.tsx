@@ -1,3 +1,4 @@
+"use client"; 
 import React from "react";
 
 export default function HomePage() {
@@ -155,7 +156,7 @@ export default function HomePage() {
                 Twitter
               </a>
               <a
-                href="https://instagram.com"
+                href="https://instagram.com" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-700 hover:text-blue-900"

@@ -10,7 +10,6 @@ export default function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false); // State for admin access
   const router = useRouter();
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -20,36 +19,27 @@ export default function Navbar() {
     };
 
     document.addEventListener("click", handleOutsideClick);
-
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, []);
 
-  // Handle Admin Login
-  const handleAdminLogin = () => {
-    const password = prompt("Please enter the admin password:");
-    if (password === "admin123") {
-      setIsLoggedIn(true);
-      setIsAdmin(true);
-      localStorage.setItem("isAdmin", "true"); // Store admin status
-      alert("You are now logged in as Admin!");
-      router.push("/admin"); // Redirect to admin dashboard
-    } else {
-      alert("Incorrect password!");
-    }
+  const handleAdminAccess = () => {
+    setIsLoggedIn(true);
+    setIsAdmin(true);
+    localStorage.setItem("isAdmin", "true");
+    alert("You are now logged in as Admin!");
+    router.push("/admin");
   };
 
-  // Handle Logout
   const handleLogout = () => {
     setIsLoggedIn(false);
     setIsAdmin(false);
-    localStorage.removeItem("isAdmin"); // Remove admin status
+    localStorage.removeItem("isAdmin");
     alert("You have been logged out!");
-    router.push("/"); // Redirect to home page
+    router.push("/");
   };
 
-  // Handle Customer Login
   const handleCustomerLogin = () => {
     setIsLoggedIn(true);
     alert("You are now logged in as a Customer!");
@@ -118,7 +108,7 @@ export default function Navbar() {
             </Link>
           ) : (
             <button
-              onClick={handleAdminLogin}
+              onClick={handleAdminAccess}
               className="hover:text-yellow-300 text-lg transition"
             >
               Admin
@@ -126,9 +116,9 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Cart and Login/Logout */}
-        <div className="space-x-4 flex items-center">
-          {/* Cart */}
+        {/* Right Section */}
+        <div className="flex items-center space-x-6">
+          {/* Cart Button */}
           {isLoggedIn && (
             <Link
               href="/cart"
@@ -152,30 +142,32 @@ export default function Navbar() {
             </Link>
           )}
 
-          {/* Customer Login */}
-          {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 transition"
-            >
-              Logout
-            </button>
-          ) : (
-            <>
+          {/* Login/Logout Section */}
+          <div className="space-x-4">
+            {isLoggedIn ? (
               <button
-                onClick={handleCustomerLogin}
-                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400 transition"
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 transition"
               >
-                Login
+                Logout
               </button>
-              <Link
-                href="/auth/register"
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 transition"
-              >
-                Register
-              </Link>
-            </>
-          )}
+            ) : (
+              <>
+                <button
+                  onClick={handleCustomerLogin}
+                  className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400 transition"
+                >
+                  Login
+                </button>
+                <Link
+                  href="/auth/register"
+                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 transition"
+                >
+                  Register
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>
