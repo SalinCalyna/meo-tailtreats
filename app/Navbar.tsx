@@ -10,6 +10,7 @@ export default function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false); // State for admin access
   const router = useRouter();
 
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -19,27 +20,31 @@ export default function Navbar() {
     };
 
     document.addEventListener("click", handleOutsideClick);
+
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, []);
 
-  const handleAdminAccess = () => {
-    setIsLoggedIn(true);
-    setIsAdmin(true);
-    localStorage.setItem("isAdmin", "true");
-    alert("You are now logged in as Admin!");
-    router.push("/admin");
-  };
+  // Handle Admin Access
+ const handleAdminAccess = () => {
+  setIsLoggedIn(true);
+  setIsAdmin(true);
+  localStorage.setItem("isAdmin", "true"); // บันทึกสถานะ Admin
+  alert("You are now logged in as Admin!");
+  router.push("/admin"); // เปลี่ยนเส้นทางไปที่หน้า Admin
+};
 
+  // Handle Logout
   const handleLogout = () => {
     setIsLoggedIn(false);
     setIsAdmin(false);
-    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("isAdmin"); // Remove admin status
     alert("You have been logged out!");
-    router.push("/");
+    router.push("/"); // Redirect to home page
   };
 
+  // Handle Customer Login
   const handleCustomerLogin = () => {
     setIsLoggedIn(true);
     alert("You are now logged in as a Customer!");
@@ -116,9 +121,9 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Right Section */}
-        <div className="flex items-center space-x-6">
-          {/* Cart Button */}
+        {/* Cart and Login/Logout */}
+        <div className="space-x-4 flex items-center">
+          {/* Cart */}
           {isLoggedIn && (
             <Link
               href="/cart"
@@ -142,32 +147,30 @@ export default function Navbar() {
             </Link>
           )}
 
-          {/* Login/Logout Section */}
-          <div className="space-x-4">
-            {isLoggedIn ? (
+          {/* Customer Login */}
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 transition"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
               <button
-                onClick={handleLogout}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 transition"
+                onClick={handleCustomerLogin}
+                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400 transition"
               >
-                Logout
+                Login
               </button>
-            ) : (
-              <>
-                <button
-                  onClick={handleCustomerLogin}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400 transition"
-                >
-                  Login
-                </button>
-                <Link
-                  href="/auth/register"
-                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 transition"
-                >
-                  Register
-                </Link>
-              </>
-            )}
-          </div>
+              <Link
+                href="/auth/register"
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 transition"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
