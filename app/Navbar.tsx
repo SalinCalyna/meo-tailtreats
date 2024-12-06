@@ -1,6 +1,4 @@
-// Navbar component
 "use client";
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,7 +9,27 @@ export default function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false); // State for admin access
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); // Modal state
   const [password, setPassword] = useState(""); // Password input state
+  const [username, setUsername] = useState(""); // State to store username
   const router = useRouter();
+
+  // Check if user is logged in on component mount
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Check if there's a valid token
+    const adminStatus = localStorage.getItem("isAdmin");
+    const storedUsername = localStorage.getItem("username"); // Get username from localStorage
+
+    if (token) {
+      setIsLoggedIn(true); // Set login status based on token
+    }
+    
+    if (adminStatus === "true") {
+      setIsAdmin(true); // Set admin status from localStorage
+    }
+
+    if (storedUsername) {
+      setUsername(storedUsername); // Set username state
+    }
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -50,15 +68,22 @@ export default function Navbar() {
 
   // Handle Login and redirect to Home page after successful login
   const handleLogin = () => {
+    const user = "exampleUser"; // Example username
     setIsLoggedIn(true);
-    router.push("/home"); // Change this to go to the home page after login
+    setUsername(user); // Set username when login
+    localStorage.setItem("token", "user-auth-token"); // Save token to localStorage
+    localStorage.setItem("username", user); // Save username to localStorage
+    router.push("/home"); // Go to home page after login
   };
 
   // Handle Logout
   const handleLogout = () => {
     setIsLoggedIn(false);
     setIsAdmin(false);
+    setUsername(""); // Clear username
+    localStorage.removeItem("token"); // Remove token from localStorage
     localStorage.removeItem("isAdmin"); // Remove admin status
+    localStorage.removeItem("username"); // Remove username
     alert("You have been logged out!");
     router.push("/"); // Redirect to home page
   };
@@ -136,6 +161,11 @@ export default function Navbar() {
 
         {/* Cart and Login/Logout */}
         <div className="space-x-4 flex items-center">
+          {/* Show username when logged in */}
+          {isLoggedIn && (
+            <span className="text-white text-lg">{`Welcome, ${username}`}</span>
+          )}
+
           {/* Cart */}
           {isLoggedIn && (
             <Link

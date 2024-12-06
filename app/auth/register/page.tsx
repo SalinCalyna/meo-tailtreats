@@ -5,9 +5,25 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // ตรวจสอบว่าอีเมลมีรูปแบบที่ถูกต้อง
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    // ตรวจสอบความยาวของรหัสผ่าน
+    if (password.length < 6) {
+      setError("Password should be at least 6 characters.");
+      return;
+    }
+
+    setError(""); // Reset error message
 
     const response = await fetch("/api/auth/register", {
       method: "POST",
@@ -17,21 +33,24 @@ export default function RegisterPage() {
       body: JSON.stringify({ name, email, password }),
     });
 
+    const data = await response.json();
+
     if (response.ok) {
       alert("Registration successful! Please login.");
       window.location.href = "/auth/login";
     } else {
-      const errorData = await response.json();
-      alert(errorData.message || "Registration failed.");
+      alert(data.message || "Registration failed.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold text-center text-blue-600 mb-4">
-          Register
-        </h1>
+        <h1 className="text-2xl font-bold text-center text-blue-600 mb-4">Register</h1>
+        
+        {/* Error Message */}
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
         <form onSubmit={handleRegister}>
           <input
             type="text"
