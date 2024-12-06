@@ -1,65 +1,70 @@
-"use client";
+import { NextApiRequest, NextApiResponse } from "next";
+import prisma from "@/lib/prisma"; // เชื่อมต่อกับ Prisma Client
 
-import { useState } from "react";
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { method } = req;
 
-export default function AddProductForm() {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [description, setDescription] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch("/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, category, price, imageUrl, description }),
-      });
-
-      if (res.ok) {
-        alert("Product added successfully!");
-      } else {
-        alert("Failed to add product");
+  switch (method) {
+    case "GET":
+      try {
+        // ดึงข้อมูลสินค้าทั้งหมด
+        const products = await prisma.product.findMany();
+        res.status(200).json(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        res.status(500).json({ error: "Unable to fetch products" });
       }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+      break;
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Product Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Category"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Image URL"
-        value={imageUrl}
-        onChange={(e) => setImageUrl(e.target.value)}
-      />
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <button type="submit">Add Product</button>
-    </form>
-  );
+    case "POST":
+      try {
+        const { name, category, price, imageUrl, description } = req.body;
+
+        // ตรวจสอบข้อมูลก่อนบันทึก
+        if (!name || !category || !price || !imageUrl || !description) {
+          return res.status(400).json({ error: "All fields are required" });
+        }
+
+        // เพิ่มสินค้าใหม่
+        const newProduct = await prisma.product.create({
+          data: {
+            name,
+            category,
+            price,
+            imageUrl,
+            description,
+          },
+        });
+
+        res.status(201).json(newProduct);
+      } catch (error) {
+        console.error("Error adding product:", error);
+        res.status(500).json({ error: "Unable to add product" });
+      }
+      break;
+
+    case "DELETE":
+      try {
+        const { id } = req.query;
+
+        if (!id || Array.isArray(id)) {
+          return res.status(400).json({ error: "Invalid product ID" });
+        }
+
+        // ลบสินค้า
+        await prisma.product.delete({
+          where: { id: parseInt(id, 10) },
+        });
+
+        res.status(200).json({ message: "Product deleted successfully" });
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        res.status(500).json({ error: "Unable to delete product" });
+      }
+      break;
+
+    default:
+      res.setHeader("Allow", ["GET", "POST", "DELETE"]);
+      res.status(405).end(`Method ${method} Not Allowed`);
+  }
 }

@@ -1,3 +1,4 @@
+// Navbar component
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,6 +9,8 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State for login status
   const [isAdmin, setIsAdmin] = useState(false); // State for admin access
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); // Modal state
+  const [password, setPassword] = useState(""); // Password input state
   const router = useRouter();
 
   // Close dropdown when clicking outside
@@ -27,13 +30,29 @@ export default function Navbar() {
   }, []);
 
   // Handle Admin Access
- const handleAdminAccess = () => {
-  setIsLoggedIn(true);
-  setIsAdmin(true);
-  localStorage.setItem("isAdmin", "true"); // บันทึกสถานะ Admin
-  alert("You are now logged in as Admin!");
-  router.push("/admin"); // เปลี่ยนเส้นทางไปที่หน้า Admin
-};
+  const handleAdminAccess = () => {
+    setIsPasswordModalOpen(true); // เปิด modal ให้กรอกรหัส
+  };
+
+  // Validate Password and login as Admin
+  const handlePasswordSubmit = () => {
+    if (password === "Admin123") {
+      setIsLoggedIn(true);
+      setIsAdmin(true);
+      localStorage.setItem("isAdmin", "true"); // บันทึกสถานะ Admin
+      alert("You are now logged in as Admin!");
+      router.push("/admin"); // เปลี่ยนเส้นทางไปที่หน้า Admin
+      setIsPasswordModalOpen(false); // ปิด modal
+    } else {
+      alert("Incorrect password!");
+    }
+  };
+
+  // Handle Login and redirect to Home page after successful login
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    router.push("/home"); // Change this to go to the home page after login
+  };
 
   // Handle Logout
   const handleLogout = () => {
@@ -42,12 +61,6 @@ export default function Navbar() {
     localStorage.removeItem("isAdmin"); // Remove admin status
     alert("You have been logged out!");
     router.push("/"); // Redirect to home page
-  };
-
-  // Handle Customer Login
-  const handleCustomerLogin = () => {
-    setIsLoggedIn(true);
-    alert("You are now logged in as a Customer!");
   };
 
   return (
@@ -157,12 +170,12 @@ export default function Navbar() {
             </button>
           ) : (
             <>
-              <button
-                onClick={handleCustomerLogin}
+              <Link
+                href="/auth/login"
                 className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400 transition"
               >
                 Login
-              </button>
+              </Link>
               <Link
                 href="/auth/register"
                 className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 transition"
@@ -173,6 +186,36 @@ export default function Navbar() {
           )}
         </div>
       </div>
+
+      {/* Admin Password Modal */}
+      {isPasswordModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-xl font-bold mb-4">Enter Admin Password</h2>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border px-4 py-2 w-full mb-4 rounded"
+              placeholder="Password"
+            />
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setIsPasswordModalOpen(false)}
+                className="bg-gray-300 text-black px-4 py-2 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handlePasswordSubmit}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

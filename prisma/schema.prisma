@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db" // ชื่อไฟล์ SQLite (dev.db)
+  url      = "file:./dev.db"
 }
 
 model Product {
@@ -12,18 +12,14 @@ model Product {
   name        String
   category    String
   price       Float
-  imageUrl    String  
+  imageUrl    String
   description String
   createdAt   DateTime @default(now())
 }
-
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  role     String   @default("user") // Default role is "user"
   createdAt DateTime @default(now())
 }
-
-
-

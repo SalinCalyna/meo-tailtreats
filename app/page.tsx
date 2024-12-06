@@ -6,20 +6,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-blue-50 relative overflow-hidden">
-      {/* Snowflakes */}
-      {snowflakes.map((_, index) => (
-        <div
-          key={index}
-          className="snowflake"
-          style={{
-            left: `${Math.random() * 100}vw`,
-            animationDelay: `${Math.random() * 5}s`,
-            fontSize: `${Math.random() * 0.5 + 0.5}em`,
-          }}
-        >
-          ❄
-        </div>
-      ))}
+      
+         
       {/* Header */}
 
       {/* Main Content */}
