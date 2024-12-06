@@ -166,8 +166,8 @@ export default function Navbar() {
             <span className="text-white text-lg">{`Welcome, ${username}`}</span>
           )}
 
-          {/* Cart */}
-          {isLoggedIn && (
+          {/* Remove Cart when logged in */}
+          {!isLoggedIn && (
             <Link
               href="/cart"
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 transition flex items-center"

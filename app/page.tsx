@@ -150,11 +150,16 @@ export default function HomePage() {
                 className="text-blue-700 hover:text-blue-900"
               >
                 Instagram
-              </a>
+              </a> 
             </div>
           </div>
         </section>
+        
       </main>
+    {/* Footer */}
+    <footer className="bg-blue-800 text-white text-center py-6 mt-auto">
+        <p className="text-lg">&copy; 2024 TailTreats Pet Shop. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 }
