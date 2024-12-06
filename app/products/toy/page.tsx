@@ -73,7 +73,7 @@ export default function CatProductsPage() {
         <input
           type="text"
           placeholder="Search for products..."
-          className="w-full md:w-1/3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="w-full md:w-3/3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

@@ -24,7 +24,7 @@ export default function LoginPage() {
         const data = await response.json();
         localStorage.setItem("token", data.token); // Store token in local storage
         alert("Login successful!");
-        router.push("/admin"); // Redirect to admin dashboard
+        router.push("/"); // Redirect to home page after login
       } else {
         const error = await response.json();
         alert(error.error || "Login failed. Please check your email or password.");

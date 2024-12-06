@@ -47,11 +47,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const { id } = req.query;
 
+        // ตรวจสอบว่า `id` ถูกส่งมาและไม่เป็น array
         if (!id || Array.isArray(id)) {
           return res.status(400).json({ error: "Invalid product ID" });
         }
 
         // ลบสินค้า
+        const productToDelete = await prisma.product.findUnique({
+          where: { id: parseInt(id, 10) },
+        });
+
+        // ตรวจสอบว่ามีสินค้าที่จะลบหรือไม่
+        if (!productToDelete) {
+          return res.status(404).json({ error: "Product not found" });
+        }
+
         await prisma.product.delete({
           where: { id: parseInt(id, 10) },
         });
